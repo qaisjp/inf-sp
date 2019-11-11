@@ -10,11 +10,11 @@ answers2.pdf: answers2.md
 exploit:
 	echo "exploit nop"
 
-question2a.diff:
-	echo "question2a.diff nop"
+question2a.diff: exploit/vulnerable.c
+	git diff 88eb09265eb15378ee40eb76a16566aed150125a exploit/vulnerable.c > question2a.diff
 
-question2b.diff:
-	echo "question2b.diff nop"
+question2b.diff: exploit/vulnerable2.c
+	git diff 88eb09265eb15378ee40eb76a16566aed150125a exploit/vulnerable2.c > question2b.diff
 
 push:
 	scp ./exploit/vulnerable.c ./exploit/vulnerable2.c sp1:/home/user/exploit
