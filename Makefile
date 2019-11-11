@@ -9,18 +9,17 @@ answers2.pdf: answers2.md
 
 exploit:
 	@chmod +x exploit.py
-	@scp ./exploit.py user@sp1:~/exploit/exploit
+	@scp -q ./exploit.py user@sp1:~/exploit/exploit
 	@echo ""
 	@ssh user@sp1 "cd exploit; ./exploit ./vulnerable"
-	@echo ""
-	@echo "board1:"
-	@echo "-------"
-	@ssh sp1 "touch /home/user/exploit/board1; cat /home/user/exploit/board1; rm /home/user/exploit/board1"
 
-	@echo ""
-	@echo "board2:"
-	@echo "-------"
-	@ssh sp1 "touch /home/user/exploit/board2; cat /home/user/exploit/board2; rm /home/user/exploit/board2"
+	@scp -q sp1:/home/user/exploit/board1 sp1:/home/user/exploit/board2 exploit 2>/dev/null || :
+	@touch exploit/board1 exploit/board2
+
+	@bat -A exploit/board1
+	@bat -A exploit/board2
+
+	@ssh sp1 "rm -f /home/user/exploit/board1 /home/user/exploit/board2"
 
 question2a.diff: exploit/vulnerable.c
 	git diff 88eb09265eb15378ee40eb76a16566aed150125a exploit/vulnerable.c > question2a.diff
@@ -30,3 +29,4 @@ question2b.diff: exploit/vulnerable2.c
 
 push:
 	scp ./exploit/vulnerable.c ./exploit/vulnerable2.c sp1:/home/user/exploit
+	ssh sp1 "cd /home/user/exploit; make"
