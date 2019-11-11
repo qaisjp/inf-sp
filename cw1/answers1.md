@@ -53,7 +53,11 @@ that are listed in the NVD (https://nvd.nist.gov) and occurred in the last two y
 
     ----
 
-    answers
+    Hardware vulnerabilities exist in the hardware and cannot be retroactively fixed - they can only be fixed by hardware manufacturers by producing new or modified versions of hardware with the vulnerabilities resolved. This requires users to purchase newer hardware (or for manufacturers to recall hardware & supply fixed versions).
+
+    Software vulnerabilities _can_ be fixed retroactively via software security updates. Software security updates ordinarily do not require the user to purchase new software. (But it depends on whether users get "free security updates".)
+
+
 
 6.  > “RIDL and Fallout are so dangerous. After I heard about these vulnerabilities, I did a full scan of
     > my computer by the latest anti-virus software and installed all application updates. The anti-virus
@@ -77,13 +81,12 @@ some reasons to support your opinion, explaining the role of PC security softwar
 
     Additionally, a machine can be attacked via these hardware vulnerabilities even if they do not share a network - for example, take a virtual machine (not connected to any network, "closed-off") on a cloud platform. Any other virtual machine on the platform, on the same host machine, could leverage RIDL or Fallout to attack the "closed-off" machine. (Hence a firewall won't protect you!)
 
-7. Apart from installing the above mentioned security software, please describe two possible measures to
-protect your computer from RIDL and Fallout attacks. **(2 marks)**
+7. Apart from installing the above mentioned security software, please describe two possible measures to protect your computer from RIDL and Fallout attacks. **(2 marks)**
 
     ----
 
     1. You should get a newer processor that has these vulnerabilities fixed. (Or an AMD processor, since those are unaffected.)
-    2. or disable hyper-threading on your Intel processor, which has an associated performance hit, and still does not protect against MDS.
+    2. or... disable hyper-threading on your Intel processor, which has an associated performance hit, and still does not protect against MDS.
 
 [CVE-2019-11091]: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-11091
 [CVE-2018-12126]: https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-12126
