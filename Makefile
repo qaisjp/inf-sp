@@ -15,3 +15,6 @@ question2a.diff:
 
 question2b.diff:
 	echo "question2b.diff nop"
+
+push:
+	scp ./exploit/vulnerable.c ./exploit/vulnerable2.c sp1:/home/user/exploit
