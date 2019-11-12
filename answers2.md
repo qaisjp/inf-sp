@@ -16,6 +16,8 @@ geometry: margin=2cm
 
     The CWE that categorises the vulnerability in the **exploit script** most closely is CWE-134. This is because we don't take advantage of the buffer overflow at all.
 
+    An attacker can abuse an externally controlled format string by reading and writing arbitrary memory, allowing them to access or modify data they are not authorised to perform those actions upon.
+
 
 
 2. A successful attack should allow an attacker to store the message in `board2` instead of `board1`. Create an exploit script called `exploit` that takes the path of the program as its first argument and launches a successful attack. We will run your program by executing:
@@ -86,4 +88,28 @@ geometry: margin=2cm
 
     ----
 
-    answers
+    - **Vulnerability 2**
+        - **Problem**
+            The program uses an externally controlled format string directly with `fprintf`.
+        - **Consequences**
+            `./a.out "ARTHURCHAN" "123456789" "%x %p"` will write certain values on the stack to `messageboard.txt`. You can use an externally controlled format string (CWE-134) to read and write arbitrary memory.
+        - **Correction**
+            _Line 28_: `fprintf(file, mess);` should be `fprintf(file, "%s", mess);`
+
+    **Vulnerability 2**
+        - **Problem**
+            The program uses `gets`. This "function is dangerous and should not be used" (source: gcc). It continuously reads from standard input until a newline is received, but there's no way to limit the number of bytes that are read, so it's prone to buffer overflow.
+        - **Consequences**
+            You can write arbitrary memory.
+        - **Correction**
+            _Line 34_ and _Line 36_ use `fgets` instead of `gets`. However, note that `gets` throws away trailing newlines, whereas `fgets` keeps them around. So we allow 1 more character for `user` and `pass` to handle the newline gracefully (but only when we use `fgets`).
+
+            This has the consequence of being slightly messy in output for super-long inputs, but you probably should't be writing something like this in C anyway.
+
+    **Vulnerability 3**
+        - **Problem**
+            The program does not check the result of `gets`.
+        - **Consequence**
+            Subsequence `strcmp` calls have undefined behaviour and could even ["contain a good password previously entered by another user"](https://www.informit.com/articles/article.aspx?p=2036582&seqNum=3).
+        - **Correction**
+            Check the return value. If the return value is 0 (null), quit the program.
