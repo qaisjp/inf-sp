@@ -1,0 +1,18 @@
+diff --git a/exploit/vulnerable.c b/exploit/vulnerable.c
+index d192317..fa44327 100644
+--- a/exploit/vulnerable.c
++++ b/exploit/vulnerable.c
+@@ -21,11 +21,11 @@ int main(int argc, char **argv) {
+         user[sizeof(user)-1] = '\0';
+         message[sizeof(message)-1] = '\0';
+ 
+-        char greeting[30] = "Hello! ";
++        char greeting[61] = "Hello! ";
+         strcat(greeting, user);
+         strcat(greeting, "!!\n");
+ 
+-        printf(greeting);
++        printf("%s", greeting);
+ 
+         FILE *file = fopen(board, "a");
+         fprintf(file, "%s\n", message);
