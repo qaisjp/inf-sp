@@ -11,6 +11,7 @@ exploit:
 	@chmod +x exploit.py
 	@scp -q ./exploit.py user@sp1:~/exploit/exploit
 	@echo ""
+	@rm -f exploit/board1 exploit/board2
 	@ssh user@sp1 "cd exploit; ./exploit ./vulnerable"
 
 	@scp -q sp1:/home/user/exploit/board1 sp1:/home/user/exploit/board2 exploit 2>/dev/null || :
