@@ -7,6 +7,9 @@ answers1.pdf: answers1.md
 answers2.pdf: answers2.md
 	pandoc answers2.md -o answers2.pdf
 
+answers3.pdf: answers3.md
+	pandoc answers3.md -o answers3.pdf
+
 exploit:
 	@chmod +x exploit.py
 	@scp -q ./exploit.py user@sp:~/exploit/exploit

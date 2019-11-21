@@ -1,6 +1,6 @@
 ---
 title: Secure Programming - answers1
-author: Qais Patankar - s1620208@inf.ed.ac.uk
+author: QP - s1620208@inf.ed.ac.uk
 geometry: margin=2cm
 ---
 
