@@ -131,3 +131,6 @@ Subsystem	sftp	/usr/lib/ssh/sftp-server
 
 # Allow only the specified users
 AllowUsers user
+
+# Allow only pub key
+AuthenticationMethods publickey

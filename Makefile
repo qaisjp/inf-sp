@@ -44,5 +44,8 @@ sshconfig-push:
 	scp sshconfig/sshd_config user@sp:sshconfig/sshd_config
 	ssh user@sp "sudo sh -c 'cat sshconfig/sshd_config > /etc/ssh/sshd_config; systemctl restart sshd'"
 
+sshconfig-show:
+	git diff 930503a30e701c728838ffae4d15d8cb2f53cbe0 sshconfig
+
 hb-test:
 	./heartbleed.py localhost -p 54321
