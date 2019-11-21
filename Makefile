@@ -31,3 +31,7 @@ question2b.diff: exploit/vulnerable2.c
 push1:
 	scp ./exploit/vulnerable.c ./exploit/vulnerable2.c sp:/home/user/exploit
 	ssh sp "cd /home/user/exploit; make"
+
+push-keys:
+	ssh-copy-id sp
+	ssh-copy-id user@sp
