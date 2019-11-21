@@ -35,3 +35,11 @@ push1:
 push-keys:
 	ssh-copy-id sp
 	ssh-copy-id user@sp
+
+sshconfig-pull:
+	scp user@sp:/etc/ssh/sshd_config sshconfig/
+
+sshconfig-push:
+	ssh user@sp "mkdir -p sshconfig"
+	scp sshconfig/sshd_config user@sp:sshconfig/sshd_config
+	ssh user@sp "sudo sh -c 'cat sshconfig/sshd_config > /etc/ssh/sshd_config; systemctl restart sshd'"
