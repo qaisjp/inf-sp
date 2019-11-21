@@ -43,3 +43,6 @@ sshconfig-push:
 	ssh user@sp "mkdir -p sshconfig"
 	scp sshconfig/sshd_config user@sp:sshconfig/sshd_config
 	ssh user@sp "sudo sh -c 'cat sshconfig/sshd_config > /etc/ssh/sshd_config; systemctl restart sshd'"
+
+hb-test:
+	./heartbleed.py localhost -p 54321
