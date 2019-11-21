@@ -50,5 +50,8 @@ sshconfig-push:
 sshconfig-show:
 	git diff 930503a30e701c728838ffae4d15d8cb2f53cbe0 sshconfig
 
+sshconfig-archive:
+	tar -czf sshconfig.tar.gz -C sshconfig .
+
 hb-test:
 	./heartbleed.py localhost -p 54321
