@@ -125,7 +125,7 @@ function ensure_logged_in()
     }
 }
 
-function get_loggedin_pubkey()
+function get_loggedin_row()
 {
     ensure_logged_in();
     $db = get_db();
@@ -134,7 +134,7 @@ function get_loggedin_pubkey()
     $result = $check->execute(array($_SESSION['username']));
 
     while ($row = $check->fetch()) {
-        return $row['pubkey'];
+        return $row;
     }
 
     die("something went wrong");
