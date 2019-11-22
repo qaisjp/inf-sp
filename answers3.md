@@ -143,6 +143,7 @@ question3.diff:
 3. todo
 
 	a safer solution would be to send the priv key to the user and let them insert the passphrase (see no. 1 about custom passphrases) so that we (well, our backend) does not see passphrases at all. but since we should "never allow the users export or access their private key", we shall not implement this.
+
 4. todo
 
 **security mitigations + improvements**
