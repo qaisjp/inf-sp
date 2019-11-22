@@ -53,21 +53,21 @@ echo $_SESSION["TEST"];
             <div class="controls"> <input id="password" name="password" type="password" placeholder="this will be your password" class="form-control" required></div>
           </div>
           <div class="control-group"> <label class="control-label" for="createaccount"></label>
-            <div class="controls"> <button id="signup" name="sign" type="submit" value="signup" class="btn btn-default">Sign with passhrase</button> </div>
+            <div class="controls"> <button id="signup" name="sign" type="submit" value="signup" class="btn btn-default">Sign with passphrase (to sha512, hex format)</button> </div>
           </div>
         </fieldset>
         <?= csrf_input(); ?>
       </form>
       <br>
 
-      <form name="login" class="form-horizontal" action="/sign.php" method="post">
+      <form name="login" class="form-horizontal" action="/sign.php" method="post" enctype="multipart/form-data">
         <fieldset>
           <legend>verify</legend>
           <div class="control-group"> <label class="control-label" for="message">message</label>
             <div class="controls"> <textarea id="message" name="message" type="text" placeholder="message" class="form-control" required></textarea></div>
           </div>
           <div class="control-group"> <label class="control-label" for="signature">signature</label>
-            <div class="controls"> <textarea id="signature" name="signature" type="text" placeholder="signature" class="form-control" required></textarea></div>
+            <div class="controls"> <textarea id="signature" name="signature" type="text" placeholder="signature (sha512, hex format)" class="form-control" required></textarea></div>
           </div>
           <div class="control-group"> <label class="control-label" for="pubkey">public key</label>
             <div class="controls"> <input id="pubkey" name="pubkey" type="file" required></div>
