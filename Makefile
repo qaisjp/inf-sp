@@ -1,4 +1,4 @@
-.PHONY: all exploit question3.diff sshconfig-archive php-archive sync
+.PHONY: all exploit question3.diff sshconfig-archive php-archive sync php-log
 all: answers1.pdf answers2.pdf answers3.pdf question2a.diff question2b.diff question3.diff
 
 submit: answers1.pdf answers2.pdf question2a.diff question2b.diff answers3.pdf sshconfig-archive question3.diff php-archive
@@ -79,3 +79,6 @@ question3.diff:
 
 php-sync:
 	while true; do inotifywait -e close_write -r http | while read dir event f; do scp "$$dir$$f" user@sp:"/srv/$$dir$$f"; done; done
+
+php-log:
+	ssh user@sp -ttt "tail -f /var/log/httpd/error_log"
