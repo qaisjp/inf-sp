@@ -12,3 +12,5 @@ if (!login($username, $password)) {
     print("invalid username or password - go back and try again <br>");
     print("<a href='/'>back</a>");
 }
+
+header("Location: /");

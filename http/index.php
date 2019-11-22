@@ -34,6 +34,7 @@ echo $_SESSION["TEST"];
   <?php
     if (check_signed_in()) {
       print 'Logged in as ' . $_SESSION["username"];
+      print '<br><a href="/logout.php">logout</a>';
     } else {
       print "Not signed in";
     }
