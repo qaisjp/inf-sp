@@ -6,9 +6,9 @@ geometry: margin=2cm
 
 # 3.1 OpenSSH configuration
 
-Here are my entire changes to sshd_config:
+Here are my entire changes to `/etc/ssh/sshd_config`:
 
-```
+```diff
 index 1d2180f..31acc81 100644
 --- a/etc/ssh/sshd_config
 +++ b/etc/ssh/sshd_config
@@ -38,3 +38,49 @@ The first change `PasswordAuthentication no` prevents password authentiction fro
 The second change, `AllowUsers user` allows _only_ the user named **`user`** to login via SSH.
 
 The final change, `AuthenticationMethods publickey`, only allows "ssh keys" (private and public keys) to be used for authentication. This alone will prevent password authentication, so you could say that `PasswordAuthentication no` is unnecessary.
+
+\pagebreak
+
+# 3.2 Fun with Heartbleed
+
+**a) Briefly explain how an attacker can exploit the Heartbleed bug. What are the possible consequence of such an attack? (2 marks)**
+
+It can be exploited by requesting a client or server to send back a specific string as a heartbeat. The heartbeat request includes: a string to send back + the size of that string.
+
+The given size of the string (in the request) is not validated, so more bytes than the actual size of the string can be sent back.
+
+This is a buffer overread, cwe-126. The common consequences of cwe-126 (and therefore this attack) include reading arbitrary values in memory. This includes the private key or any other secrets that may be in memory.
+
+**b) Try to review the code and fix the Heartbleed bug. Briefly describe your fix in answers3.pdf**.
+
+```diff
+diff --git a/openssl-1.0.1f-source/ssl/t1_lib.c b/openssl-1.0.1f-source/ssl/t1_lib.c
+index ec6578a..7c04207 100644
+--- a/openssl-1.0.1f-source/ssl/t1_lib.c
++++ b/openssl-1.0.1f-source/ssl/t1_lib.c
+@@ -2562,6 +2562,8 @@ tls1_process_heartbeat(SSL *s)
+ 	hbtype = *p++;
+ 	n2s(p, payload);
+ 	pl = p;
++	if (1 + 2 + payload + 16 > s->s3->rrec.length)
++		return 0;
+
+ 	if (s->msg_callback)
+ 		s->msg_callback(0, s->version, TLS1_RT_HEARTBEAT,
+```
+
+My patch to fix TLS, copied above, modifies `ssl/t1_lib.c`.
+
+The patch checks to make sure that `heartbeat_type + heartbeat_length + payload_size + padding` is greater than the actual record length, and if so, discard.
+
+The script at https://gist.github.com/eelsivart/10174134 was used to test my fix to TLS. The fix to DTLS has not been tested, so the above patch is simply reapplied (at the correct lines) to `ssl/d1_both.c` under the educated guess that it will Just Work.
+
+----
+
+Note: I have put my coursework under `git` version control are I am using it to generate my patch files. This is why you see unrecognisable commit hashes!
+
+Makefile:
+```make
+question3.diff:
+	git diff 1205086771dfe674fdf68aab019f4c05d306bd23 openssl-1.0.1f-source > question3.diff
+```
