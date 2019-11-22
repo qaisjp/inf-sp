@@ -4,6 +4,8 @@ author: QP - s1620208@inf.ed.ac.uk
 geometry: margin=2cm
 ---
 
+# 3.1 OpenSSH configuration
+
 Here are my entire changes to sshd_config:
 
 ```
