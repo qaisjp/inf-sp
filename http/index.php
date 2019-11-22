@@ -60,7 +60,7 @@ echo $_SESSION["TEST"];
       </form>
       <br>
 
-      <form name="login" class="form-horizontal" action="/verify.php" method="post">
+      <form name="login" class="form-horizontal" action="/sign.php" method="post">
         <fieldset>
           <legend>verify</legend>
           <div class="control-group"> <label class="control-label" for="message">message</label>

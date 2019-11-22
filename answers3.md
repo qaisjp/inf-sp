@@ -152,9 +152,18 @@ question3.diff:
 	echo get_loggedin_pubkey();
 	```
 
-3. todo
+3. digital signing
 
-	a safer solution would be to send the priv key to the user and let them insert the passphrase (see no. 1 about custom passphrases) so that we (well, our backend) does not see passphrases at all. but since we should "never allow the users export or access their private key", we shall not implement this.
+	the user also needs to provide their password since the priv key's passphrase is the user's password. a better alternative would be to ask the user for a passphrase when they register, so that we don't reuse the password as a passphrase.
+
+	If an attacker got passwords, and managed to crack the passwords, they would then be able to decode the private keys. bad! but a risk we are going to take for this webapp. still, an attacker could try to update our code with one that holds onto the password in plaintext, but this is one of the most dangerous scenarios as they could do literally anything.
+
+	an even better alternative would be to send the priv key to the user and let them insert the passphrase (see no. 1 about custom passphrases) so that we (well, our backend) does not see passphrases at all. but since we should "never allow the users export or access their private key", we shall not implement this.
+
+	code for this can be found at the bottom of `sign.php`.
+
+	we picked sha512 as the signature algo since the default of sha1 is broken: https://shattered.io/
+
 
 4. todo
 
