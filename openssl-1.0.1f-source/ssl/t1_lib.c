@@ -2559,9 +2559,13 @@ tls1_process_heartbeat(SSL *s)
 	unsigned int padding = 16; /* Use minimum padding */
 
 	/* Read type and payload length first */
+	if (1 + 2 + 16 > s->s3->rrec.length)
+		return 0;
 	hbtype = *p++;
 	n2s(p, payload);
 	pl = p;
+	if (1 + 2 + payload + 16 > s->s3->rrec.length)
+		return 0;
 
 	if (s->msg_callback)
 		s->msg_callback(0, s->version, TLS1_RT_HEARTBEAT,
