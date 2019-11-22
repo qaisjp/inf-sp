@@ -1,6 +1,7 @@
 <?php
 include_once("include/base.php");
-
+echo $_SESSION["TEST"];
+// $_SESSION["TEST"] = "ok";
 ?>
 
 <html lang="en">
@@ -23,7 +24,7 @@ include_once("include/base.php");
   <body>
     <?php
       ini_set('display_errors', 'On');
-      include 'include/functions.php';
+      include_once('include/functions.php');
     ?>
     <div class="jumbotron">
         <h1>Super Secure Digital Signature Service</h1>
@@ -31,6 +32,7 @@ include_once("include/base.php");
 
     <div class="container">
 	<?php
+  logout();
           print '<form name="login" class="form-horizontal" action="index.php" method="post">';
           print '  <fieldset>';
           print '    <legend>Login or sign up</legend>';

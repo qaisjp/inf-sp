@@ -113,3 +113,11 @@ Here are a list of general notes and security mitigations:
 3. We've moved `db/ds_service.db` to `include/ds_service.db`, to prevent it from being downloaded. If someone downloads it they would have everyone's data including their passwords. This is bad! Protection is provided by blocking the include folder.
 
 	A better fix would be to move it outside a folder that httpd serves.
+
+4. Remove own session code.
+
+	We've removed the code that tries to recreate PHP sessions. It is bad practice to reinvent the wheel, and in this case, it was implemented quite poorly.
+
+	One example of why it's bad is because it depends directly on md5 hashes. See https://stackoverflow.com/questions/22140204/why-md5240610708-is-equal-to-md5qnkcdzo and https://www.whitehatsec.com/blog/magic-hashes/ for info on this.
+
+	We'll use PHP's inbuilt session feature instead.

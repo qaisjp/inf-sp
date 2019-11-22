@@ -43,6 +43,7 @@ function add_user($db, $username, $password)
     $insert->bindParam(':pass', $password);
     $insert->execute();
 
+    // todo xss
     print("<p>Created login for '{$username}'.</p>");
 }
 
@@ -57,34 +58,23 @@ function signup($username, $password)
         if (check_uniqueness($db, $username)) {
             add_user($db, $username, $password);
         } else {
+            // todo xss
             print("<p>Username '{$username}' is already registered.</p>");
         }
     }
     catch(PDOException $e)
     {
+        // todo information disclosure
      	print($e->getMessage());
     }
-}
-
-
-// Create a session token
-function create_token($username)
-{
-    setcookie("username", $username);
-    setcookie("session", md5($username));
-}
-
-// Check a session token
-function check_token($username, $session)
-{
-    return (md5($username) == $session);
 }
 
 // Destroy the session token
 function logout()
 {
-    setcookie("username", "", time()-3600);
-    setcookie("session", "", time()-3600);
+    if (!session_destroy()) {
+        die("failed to destroy session. oh no.");
+    }
 }
 
 function login($username, $password)
@@ -95,12 +85,13 @@ function login($username, $password)
     {
      	$db = get_db();
 
+         // TODO: sql injection
         $check = $db->prepare("SELECT * FROM users WHERE username='".$username."' AND password='".$password."'");
         $result = $check->execute();
 
         while ($row = $check->fetch())
         {
-            create_token($row['username']);
+            $_SESSION["username"] = $row['username'];
             return True;
         }
 
@@ -108,6 +99,7 @@ function login($username, $password)
     }
     catch(PDOException $e)
     {
+        // todo information disclosure
      	print($e->getMessage());
     }
 }
@@ -115,16 +107,7 @@ function login($username, $password)
 // Check if there is a user signed in
 function check_signed_in()
 {
-    if (isset($_COOKIE['username'], $_COOKIE['session']))
-    {
-        if (check_token($_COOKIE['username'], $_COOKIE['session']))
-     	{   return True; }
-        else
-        {
-            logout();
-        }
-    }
-    return False;
+    return isset($_SESSION['username']);
 }
 
 ?>
