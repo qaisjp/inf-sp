@@ -89,3 +89,13 @@ php-sync-httpd:
 
 code.tar.gz:
 	tar -czf code.tar.gz http httpd.conf
+
+php-mount:
+	mkdir -p ~/mounts/php
+	sshfs user@sp:/srv/http ~/mounts/php
+
+php-unmount:
+	fusermount -u ~/mounts/php
+
+php-sqlite:
+	[ -f ~/mounts/php/include/ds_service.db ] && sqlite3 ~/mounts/php/include/ds_service.db
