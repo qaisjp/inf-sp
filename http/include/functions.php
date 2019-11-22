@@ -82,8 +82,8 @@ function login($username, $password)
         $db = get_db();
 
         // TODO: sql injection
-        $check = $db->prepare("SELECT * FROM users WHERE username='" . $username . "' AND password='" . $password . "'");
-        $result = $check->execute();
+        $check = $db->prepare("SELECT * FROM users WHERE username = ? AND password = ?");
+        $result = $check->execute(array($username, $password));
 
         while ($row = $check->fetch()) {
             $_SESSION["username"] = $row['username'];

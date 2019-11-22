@@ -171,3 +171,31 @@ Here are a list of general notes and security mitigations:
 	(applied wherever necessary)
 
 	Prevents information from being leaked when an error occurs
+
+6. fix sql injection on login
+
+	CWE-89: https://cwe.mitre.org/data/definitions/89.html
+
+	```diff
+	diff --git a/http/include/functions.php b/http/include/functions.php
+	index 816a336..9254e81 100644
+	--- a/http/include/functions.php
+	+++ b/http/include/functions.php
+	@@ -82,8 +82,8 @@ function login($username, $password)
+			$db = get_db();
+
+			// TODO: sql injection
+	-        $check = $db->prepare("SELECT * FROM users WHERE username='" . $username . "' AND password='" . $password . "'");
+	-        $result = $check->execute();
+	+        $check = $db->prepare("SELECT * FROM users WHERE username = ? AND password = ?");
+	+        $result = $check->execute(array($username, $password));
+
+			while ($row = $check->fetch()) {
+				$_SESSION["username"] = $row['username'];
+	```
+
+	you can provide something malicious to log in as any user or perform any sql command. see the following lab: https://www.inf.ed.ac.uk/teaching/courses/sp/2019/labs/lab2/
+
+	Example username to use log in as `david` without needing the correct password: `david' -- ` (don't forget trailing space after the two dashes)
+
+	fix works by using question mark parameters, which includes and escapes values for us. see https://www.php.net/manual/en/pdo.prepare.php#refsect1-pdo.prepare-examples

@@ -31,8 +31,12 @@ echo $_SESSION["TEST"];
     </div>
 
     <div class="container">
-	<?php
-    print 'Logged in: ' . check_signed_in();
+  <?php
+    if (check_signed_in()) {
+      print 'Logged in as ' . $_SESSION["username"];
+    } else {
+      print "Not signed in";
+    }
           print '<form name="login" class="form-horizontal" action="/login.php" method="post">';
           print '  <fieldset>';
           print '    <legend>Login or sign up</legend>';
