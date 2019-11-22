@@ -37,6 +37,7 @@ function check_uniqueness($db, $username)
 // Add a user to the database
 function add_user($db, $username, $password)
 {
+    // TODO: prevent plaintext password output
     $insert = $db->prepare("INSERT INTO users VALUES(:name, :pass)");
     $insert->bindParam(':name', $username);
     $insert->bindParam(':pass', $password);
@@ -48,13 +49,16 @@ function add_user($db, $username, $password)
 // Try and sign a user up
 function signup($username, $password)
 {
+    // TODO: prevent username reveal
+
     try
     {
      	$db = get_db();
-        if (check_uniqueness($db, $username))
-        { add_user($db, $username, $password); }
-        else
-	{ print("<p>Username '{$username}' is already registered.</p>"); }
+        if (check_uniqueness($db, $username)) {
+            add_user($db, $username, $password);
+        } else {
+            print("<p>Username '{$username}' is already registered.</p>");
+        }
     }
     catch(PDOException $e)
     {
