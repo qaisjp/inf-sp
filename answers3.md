@@ -114,6 +114,8 @@ question3.diff:
 	</Location>
 	```
 
+- `/etc/php/php.ini` should be updated with our `php.init`. it enables the `openssl` extension.
+
 **how features were implemented**
 
 1. signup and login uses `password_hash` and `password_verify` with the default settings. (bcrypt, cost 10). the user's password is used as the private key passphrase when signing up.
