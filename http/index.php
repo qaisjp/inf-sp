@@ -36,7 +36,7 @@ echo $_SESSION["TEST"];
     <?php
 
     if (check_signed_in()) {
-      print 'Logged in as ' . $_SESSION["username"];
+      print 'Logged in as ' . htmlspecialchars($_SESSION["username"]);
       print '<br><a href="/pubkeypls.php">download pub key</a><br>';
 
       ?>

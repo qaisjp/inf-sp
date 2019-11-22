@@ -42,8 +42,8 @@ function add_user($db, $username, $password)
     $privKey = openssl_pkey_get_private($cert);
     openssl_pkey_export($privKey, $strPrivKey, $password);
     $strPubKey = openssl_pkey_get_details($privKey)['key'];
-    echo '$strPrivKey:<pre>' . $strPrivKey . '</pre>';
-    echo '$strPubKey:<pre>' . $strPubKey . '</pre>';
+    // echo '$strPrivKey:<pre>' . $strPrivKey . '</pre>';
+    // echo '$strPubKey:<pre>' . $strPubKey . '</pre>';
 
     $insert = $db->prepare("INSERT INTO users VALUES(:name, :pass, :pub, :priv)");
     $insert->bindParam(':name', $username);
