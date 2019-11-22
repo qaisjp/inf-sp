@@ -21,13 +21,11 @@ function check_uniqueness($db, $username)
     $check->bindParam(':name', $username);
     $result = $check->execute();
 
-    if ($result)
-    {
-     	while ($row = $check->fetch())
-        {
+    if ($result) {
+        while ($row = $check->fetch()) {
             return False;
         }
-	return True;
+        return True;
     }
 
     return False;
@@ -52,20 +50,17 @@ function signup($username, $password)
 {
     // TODO: prevent username reveal
 
-    try
-    {
-     	$db = get_db();
+    try {
+        $db = get_db();
         if (check_uniqueness($db, $username)) {
             add_user($db, $username, $password);
         } else {
             // todo xss
             print("<p>Username '{$username}' is already registered.</p>");
         }
-    }
-    catch(PDOException $e)
-    {
+    } catch (PDOException $e) {
         // todo information disclosure
-     	print($e->getMessage());
+        print($e->getMessage());
     }
 }
 
@@ -81,26 +76,22 @@ function login($username, $password)
 {
     logout();
 
-    try
-    {
-     	$db = get_db();
+    try {
+        $db = get_db();
 
-         // TODO: sql injection
-        $check = $db->prepare("SELECT * FROM users WHERE username='".$username."' AND password='".$password."'");
+        // TODO: sql injection
+        $check = $db->prepare("SELECT * FROM users WHERE username='" . $username . "' AND password='" . $password . "'");
         $result = $check->execute();
 
-        while ($row = $check->fetch())
-        {
+        while ($row = $check->fetch()) {
             $_SESSION["username"] = $row['username'];
             return True;
         }
 
-	return False;
-    }
-    catch(PDOException $e)
-    {
+        return False;
+    } catch (PDOException $e) {
         // todo information disclosure
-     	print($e->getMessage());
+        print($e->getMessage());
     }
 }
 
@@ -109,5 +100,3 @@ function check_signed_in()
 {
     return isset($_SESSION['username']);
 }
-
-?>
