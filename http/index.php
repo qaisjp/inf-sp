@@ -1,5 +1,5 @@
 <?php
-include_once("include/base.php");
+require_once("include/base.php");
 echo $_SESSION["TEST"];
 // $_SESSION["TEST"] = "ok";
 ?>
@@ -24,7 +24,7 @@ echo $_SESSION["TEST"];
   <body>
     <?php
       ini_set('display_errors', 'On');
-      include_once('include/functions.php');
+      require_once('include/functions.php');
     ?>
     <div class="jumbotron">
         <h1>Super Secure Digital Signature Service</h1>
@@ -32,8 +32,8 @@ echo $_SESSION["TEST"];
 
     <div class="container">
 	<?php
-  logout();
-          print '<form name="login" class="form-horizontal" action="index.php" method="post">';
+    print 'Logged in: ' . check_signed_in();
+          print '<form name="login" class="form-horizontal" action="/login.php" method="post">';
           print '  <fieldset>';
           print '    <legend>Login or sign up</legend>';
           print '    <div class="control-group">';

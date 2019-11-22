@@ -74,7 +74,9 @@ function logout()
 
 function login($username, $password)
 {
-    logout();
+    if (check_signed_in()) {
+        die("user already logged in");
+    }
 
     try {
         $db = get_db();
