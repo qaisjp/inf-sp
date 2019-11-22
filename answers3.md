@@ -144,3 +144,30 @@ Here are a list of general notes and security mitigations:
 	```
 
 	and the removal of `create_token` and `check_token`.
+
+5. Log error messages to console instead of to user
+
+	fixes CWE-200 Information disclosure
+
+	patch:
+
+	```diff
+	diff --git a/http/include/functions.php b/http/include/functions.php
+	index 5df9081..816a336 100644
+	--- a/http/include/functions.php
+	+++ b/http/include/functions.php
+	@@ -59,8 +59,8 @@ function signup($username, $password)
+				print("<p>Username '{$username}' is already registered.</p>");
+			}
+		} catch (PDOException $e) {
+	-        // todo information disclosure
+	-        print($e->getMessage());
+	+        error_log($e->getMessage());
+	+        die("Internal error!");
+		}
+	}
+	```
+
+	(applied wherever necessary)
+
+	Prevents information from being leaked when an error occurs
