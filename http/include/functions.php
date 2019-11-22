@@ -42,7 +42,7 @@ function add_user($db, $username, $password)
     $insert->execute();
 
     // todo xss
-    print("<p>Created login for '{$username}'.</p>");
+    print("<p>Login created.</p>");
 }
 
 // Try and sign a user up
@@ -55,8 +55,7 @@ function signup($username, $password)
         if (check_uniqueness($db, $username)) {
             add_user($db, $username, $password);
         } else {
-            // todo xss
-            print("<p>Username '{$username}' is already registered.</p>");
+            print("<p>Username is already registered.</p>");
         }
     } catch (PDOException $e) {
         error_log($e->getMessage());
