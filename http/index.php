@@ -39,6 +39,44 @@ echo $_SESSION["TEST"];
       print 'Logged in as ' . $_SESSION["username"];
       print '<br><a href="/logout.php">logout</a><br>';
       print '<br><a href="/pubkeypls.php">download pub key</a><br>';
+
+      ?>
+      <br>
+      <form name="login" class="form-horizontal" action="/sign.php" method="post">
+        <fieldset>
+          <legend>sign key</legend>
+          <div class="control-group"> <label class="control-label" for="message">message</label>
+            <div class="controls"> <textarea id="message" name="message" type="text" placeholder="message" class="form-control" required></textarea></div>
+          </div>
+          <div class="control-group"> <label class="control-label" for="password">Passphrase</label>
+            <div class="controls"> <input id="password" name="password" type="password" placeholder="this will be your password" class="form-control" required></div>
+          </div>
+          <div class="control-group"> <label class="control-label" for="createaccount"></label>
+            <div class="controls"> <button id="signup" name="sign" type="submit" value="signup" class="btn btn-default">Sign with passhrase</button> </div>
+          </div>
+        </fieldset>
+      </form>
+      <br>
+
+      <form name="login" class="form-horizontal" action="/verify.php" method="post">
+        <fieldset>
+          <legend>verify</legend>
+          <div class="control-group"> <label class="control-label" for="message">message</label>
+            <div class="controls"> <textarea id="message" name="message" type="text" placeholder="message" class="form-control" required></textarea></div>
+          </div>
+          <div class="control-group"> <label class="control-label" for="signature">signature</label>
+            <div class="controls"> <textarea id="signature" name="signature" type="text" placeholder="signature" class="form-control" required></textarea></div>
+          </div>
+          <div class="control-group"> <label class="control-label" for="pubkey">public key</label>
+            <div class="controls"> <input id="pubkey" name="pubkey" type="file" required></div>
+          </div>
+          <div class="control-group"> <label class="control-label" for="createaccount"></label>
+            <div class="controls"> <button name="verify" type="submit" value="signup" class="btn btn-default">verify</button> </div>
+          </div>
+        </fieldset>
+      </form>
+
+    <?php
     } else {
       print "Not signed in";
 
