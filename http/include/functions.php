@@ -1,11 +1,4 @@
 <?php
-function dss_check() {
-    global $inside_dss;
-    if (!isset($inside_dss)) {
-        die();
-    }
-}
-dss_check();
 
 // Reload the page
 function reload_page()
