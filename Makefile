@@ -1,7 +1,7 @@
-.PHONY: all exploit question3.diff sshconfig-archive code.tar.gz sync php-log
+.PHONY: all exploit question3.diff sshconfig.tar.gz code.tar.gz sync php-log
 all: answers1.pdf answers2.pdf answers3.pdf question2a.diff question2b.diff question3.diff
 
-submit: answers1.pdf answers2.pdf question2a.diff question2b.diff answers3.pdf sshconfig-archive question3.diff code.tar.gz
+submit: answers1.pdf answers2.pdf question2a.diff question2b.diff answers3.pdf sshconfig.tar.gz question3.diff code.tar.gz
 	mkdir _submit
 	cp exploit.py _submit/exploit
 	submit sp cw answers1.pdf answers2.pdf _submit/exploit question2a.diff question2b.diff answers3.pdf sshconfig.tar.gz question3.diff code.tar.gz
@@ -56,7 +56,7 @@ sshconfig-push:
 sshconfig-show:
 	git diff 930503a30e701c728838ffae4d15d8cb2f53cbe0 sshconfig
 
-sshconfig-archive:
+sshconfig.tar.gz:
 	tar -czf sshconfig.tar.gz -C sshconfig .
 
 hb-run:
