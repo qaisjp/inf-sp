@@ -96,3 +96,16 @@ Here are a list of general notes and security mitigations:
 	It is a common mistake to leave `phpinfo()` out in the wild. Leaving this there would disclose too much information like the PHP version, OS version, and lots of other stuff. This can then be used in helping someone perform an attack (as they would know if we're using an outdated PHP version, etc.)
 
 	Solution: prevent `phpinfo()` from being run.
+
+2. We have added the following entry to `httpd.conf`:
+
+	```xml
+	<Location "/include">
+		Order Allow,Deny
+		Deny from all
+	</Location>
+	```
+
+	This ensures that code only meant for inclusion cannot be run directly by a user. This prevents unintended behaviour from occurring.
+
+	(If there was a file in there that performs an action, this prevents it from being run.)
