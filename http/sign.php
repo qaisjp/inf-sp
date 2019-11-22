@@ -1,6 +1,7 @@
 <?php
 require_once("include/base.php");
 ensure_logged_in();
+csrf_check();
 
 if (strlen($_POST['message']) > 10000) {
     die('message is too long man');
