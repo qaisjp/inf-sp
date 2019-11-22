@@ -67,3 +67,6 @@ hb-mount:
 
 hb-unmount:
 	fusermount -u ~/mounts/hb
+
+question3.diff:
+	git diff 1205086771dfe674fdf68aab019f4c05d306bd23 openssl-1.0.1f-source > question3.diff
