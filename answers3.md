@@ -132,6 +132,8 @@ question3.diff:
 	;extension=pdo_pgsql.so
 	```
 
+	apparently there's a `php-production.ini` file that you get when you install php, so it's recommended you use that. i have not shipped any such file.
+
 **how features were implemented**
 
 1. signup and login uses `password_hash` and `password_verify` with the default settings. (bcrypt, cost 10). the user's password is used as the private key passphrase when signing up. both of these are stored as strings in the `users` table, with column type `blob`.
@@ -164,8 +166,18 @@ question3.diff:
 
 	we picked sha512 as the signature algo since the default of sha1 is broken: https://shattered.io/
 
+	we then output that in hex format
 
-4. todo
+
+4. digital signature verification
+
+	code for this can be found at the top of `sign.php`.
+
+	input must be a hex encoded sha512 signature
+
+	this one is fairly simple and is just plumbing. the filename of the uploaded file is not used (directly by us, but yes it's processed by php), so we're safe in that regard. we're just processing the uploaded file directly, not moving it or storing it anywhere, so we're still safe.
+
+	issues would only arrive if there's a bug in the openssl library/bindings (it's php, so definitely not out of the question)
 
 **security mitigations + improvements**
 

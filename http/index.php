@@ -25,7 +25,7 @@ echo $_SESSION["TEST"];
 
 <body>
   <?php
-  ini_set('display_errors', 'On');
+  // ini_set('display_errors', 'On');
   require_once('include/functions.php');
   ?>
   <div class="jumbotron">
