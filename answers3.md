@@ -105,6 +105,8 @@ question3.diff:
 	alter table users add privkey blob;
 	```
 
+	you should also truncate the `users` table since the columns we've just added will be empty for the existing rows
+
 - `/etc/httpd/conf/httpd.conf` should be updated with our `httpd.conf`. it blocks access to the `include` folder by adding the following node:
 
 	```xml

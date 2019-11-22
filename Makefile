@@ -88,7 +88,7 @@ php-sync-httpd:
 	ssh sp "systemctl restart httpd"
 
 code.tar.gz:
-	tar -czf code.tar.gz http httpd.conf
+	tar -czf code.tar.gz http httpd.conf php.ini
 
 php-mount:
 	mkdir -p ~/mounts/php
