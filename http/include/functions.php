@@ -84,7 +84,6 @@ function login($username, $password)
     try {
         $db = get_db();
 
-        // TODO: sql injection
         $check = $db->prepare("SELECT * FROM users WHERE username = ?");
         $result = $check->execute(array($username));
 
