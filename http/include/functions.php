@@ -35,21 +35,17 @@ function check_uniqueness($db, $username)
 // Add a user to the database
 function add_user($db, $username, $password)
 {
-    // TODO: prevent plaintext password output
     $insert = $db->prepare("INSERT INTO users VALUES(:name, :pass)");
     $insert->bindParam(':name', $username);
     $insert->bindParam(':pass', password_hash($password, PASSWORD_DEFAULT));
     $insert->execute();
 
-    // todo xss
     print("<p>Login created.</p>");
 }
 
 // Try and sign a user up
 function signup($username, $password)
 {
-    // TODO: prevent username reveal
-
     if (strlen($password) > 72) {
         die("Password max length is 72");
     }
