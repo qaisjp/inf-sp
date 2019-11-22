@@ -82,3 +82,7 @@ php-sync:
 
 php-log:
 	ssh user@sp -ttt "tail -f /var/log/httpd/error_log"
+
+php-sync-httpd:
+	scp httpd.conf sp:/etc/httpd/conf/httpd.conf
+	ssh sp "systemctl restart httpd"
