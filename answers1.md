@@ -42,7 +42,7 @@ consequences. **(4 marks)**
 
     ----
 
-    answers
+    The common consequences include reading arbitrary values in memory. This includes any secrets that may be in memory. Or secrets that were have recently been written into memory. An attacker can get any data that your processor has seen. If an attacker gets your password, they can login to your email and steal your accounts and even your money (depending on the accounts you have connected). Or they can get the root password to your server, and access corporate secrets and data of your users.
 
 5. These two vulnerabilities are considered to be “hardware” vulnerabilities. Briefly discuss the difference
 between hardware vulnerabilities and software vulnerabilities and how you might draw a distinction. To
@@ -56,6 +56,9 @@ that are listed in the NVD (https://nvd.nist.gov) and occurred in the last two y
     Hardware vulnerabilities exist in the hardware and cannot be retroactively fixed - they can only be fixed by hardware manufacturers by producing new or modified versions of hardware with the vulnerabilities resolved. This requires users to purchase newer hardware (or for manufacturers to recall hardware & supply fixed versions).
 
     Software vulnerabilities _can_ be fixed retroactively via software security updates. Software security updates ordinarily do not require the user to purchase new software. (But it depends on whether users get "free security updates".)
+
+    - software: https://nvd.nist.gov/vuln/detail/CVE-2019-18786
+    - hardware: foreshadow ([wiki](https://en.wikipedia.org/wiki/Foreshadow_(security_vulnerability))) - https://nvd.nist.gov/vuln/detail/CVE-2018-3615
 
 
 

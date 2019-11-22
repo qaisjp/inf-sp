@@ -2,10 +2,9 @@
 all: answers1.pdf answers2.pdf answers3.pdf question2a.diff question2b.diff question3.diff
 
 submit: answers1.pdf answers2.pdf question2a.diff question2b.diff answers3.pdf sshconfig.tar.gz question3.diff code.tar.gz
-	mkdir _submit
+	mkdir -p _submit
 	cp exploit.py _submit/exploit
 	submit sp cw answers1.pdf answers2.pdf _submit/exploit question2a.diff question2b.diff answers3.pdf sshconfig.tar.gz question3.diff code.tar.gz
-	rm -f _submit
 
 answers1.pdf: answers1.md
 	pandoc answers1.md -o answers1.pdf
