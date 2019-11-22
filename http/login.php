@@ -8,9 +8,17 @@ if ($_SERVER['REQUEST_METHOD'] !== "POST") {
 $username = $_POST["username"];
 $password = $_POST["password"];
 
-if (!login($username, $password)) {
-    print("invalid username or password - go back and try again <br>");
-    print("<a href='/'>back</a>");
+if (isset($_POST["signup"])) {
+    if (signup($username, $password)) {
+        print("you're all signed up! well done.");
+        print("<a href='/'>go back and try logging in</a>");
+    }
+    die();
 }
 
-header("Location: /");
+if (!login($username, $password)) {
+    print("invalid username or password - go back and try again <br>");
+} else {
+    print('well done. success.');
+}
+print("<a href='/'>back</a>");

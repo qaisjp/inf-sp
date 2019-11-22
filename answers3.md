@@ -89,6 +89,9 @@ question3.diff:
 
 # 3.3 Digital Signature Service (35 marks)
 
+other notes:
+- `ds_service.db` must have write permissions from group `http` so that it can be written to. `chmod 664 ds_service.db; sudo chgrp http ds_service.db`
+
 Here are a list of general notes and security mitigations:
 
 1. We have deleted `include/.admin.php`. CWE-200. Example CVE: https://www.cvedetails.com/cve/CVE-2002-2247/
@@ -236,6 +239,62 @@ Here are a list of general notes and security mitigations:
 
 	without that function, a username `<script>alert("xss");</script>` would be directly transcluded into the html page, resulting in an alert popping up in the users browser (via javascript running in their browser). a malicious user (our attacker, Eve) could instead silently send cookies to Eve's website. or run a bitcoin miner on that page.
 
-	so above, instead of `... Username '{$username}' is ...`, you would do `... Username '{htmlspecialchars($username)}' is ...`
+	so above, instead of `... Username '{$username}' is ...`
+
+	you would do `... Username '{htmlspecialchars($username)}' is ...`
 
 	however, the "solution" we applied here is to simply not print out the username.
+
+8. plaintext passwords
+
+	plaintext passwords are being stored in the database. this is bad practice as it means it is super easy for anyone with access to the db to see someone's password. it also means that if the db is stolen, the attacker has access too.
+
+	the solution here is to store the output of `password_hash` as the password. and to verify using `password_verify`.
+
+	we also limit the password length to 72 (when registering accounts) as the default `password_hash` uses bcrypt, which truncates to 72. it is better to fail and notify the user about this, instead of silently truncating.
+
+	password_hash/verify with bcrypt automatically salts and hashes our password without us needing to worry too much about the intricacies. the default cost of 10 is fine.
+
+	```diff
+	diff --git a/http/include/functions.php b/http/include/functions.php
+	index a6ad0ee..395a375 100644
+	--- a/http/include/functions.php
+	+++ b/http/include/functions.php
+	@@ -38,7 +38,7 @@ function add_user($db, $username, $password)
+		// TODO: prevent plaintext password output
+		$insert = $db->prepare("INSERT INTO users VALUES(:name, :pass)");
+		$insert->bindParam(':name', $username);
+	-    $insert->bindParam(':pass', $password);
+	+    $insert->bindParam(':pass', password_hash($password, PASSWORD_DEFAULT));
+		$insert->execute();
+
+		// todo xss
+	@@ -50,6 +50,10 @@ function signup($username, $password)
+	{
+		// TODO: prevent username reveal
+
+	+    if (strlen($password) > 72) {
+	+        die("Password max length is 72");
+	+    }
+	+
+		try {
+			$db = get_db();
+			if (check_uniqueness($db, $username)) {
+	@@ -81,10 +85,14 @@ function login($username, $password)
+			$db = get_db();
+
+			// TODO: sql injection
+	-        $check = $db->prepare("SELECT * FROM users WHERE username = ? AND password = ?");
+	-        $result = $check->execute(array($username, $password));
+	+        $check = $db->prepare("SELECT * FROM users WHERE username = ?");
+	+        $result = $check->execute(array($username));
+
+			while ($row = $check->fetch()) {
+	+            if (!password_verify($password, $row['password'])) {
+	+                return False;
+	+            }
+	+
+				$_SESSION["username"] = $row['username'];
+				return True;
+			}
+	```
