@@ -89,10 +89,41 @@ question3.diff:
 
 # 3.3 Digital Signature Service (35 marks)
 
-other notes:
-- `ds_service.db` must have write permissions from group `http` so that it can be written to. `chmod 664 ds_service.db; sudo chgrp http ds_service.db`
+**setting stuff up**
 
-Here are a list of general notes and security mitigations:
+- `ds_service.db` must have write permissions from group `http` so that it can be written to.
+
+	```bash
+	chmod 664 ds_service.db
+	sudo chgrp http ds_service.db
+	```
+
+- table `users` needs modification. run the following sql statements as you like to get things set up:
+
+	```sql
+	alter table users add pubkey blob;
+	alter table users add privkey blob;
+	```
+
+- `/etc/httpd/conf/httpd.conf` should be updated with our `httpd.conf`. it blocks access to the `include` folder by adding the following node:
+
+	```xml
+	<Location "/include">
+		Order Allow,Deny
+		Deny from all
+	</Location>
+	```
+
+**how features were implemented**
+
+1. signup and login uses `password_hash` and `password_verify` with the default settings. (bcrypt, cost 10). the user's password is used as the private key passphrase when signing up.
+2. public keys are public, so stored verbatim in the database.
+3. todo
+4. todo
+
+**security mitigations + improvements**
+
+Here are an almost comprehensive list of security mitigations that my code includes (or stuff that could be improved):
 
 1. We have deleted `include/.admin.php`. CWE-200. Example CVE: https://www.cvedetails.com/cve/CVE-2002-2247/
 
