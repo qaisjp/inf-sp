@@ -298,3 +298,8 @@ Here are a list of general notes and security mitigations:
 				return True;
 			}
 	```
+9. don't display errors
+
+	in production the `ini_set('display_errors', 'On');` line should be removed or turned off to prevent leakage of code or other information to the user
+
+	it theoretically code (depending on the type of error or the error message etc) expose keys in the environment and leak code
