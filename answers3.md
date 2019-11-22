@@ -134,9 +134,15 @@ question3.diff:
 
 **how features were implemented**
 
-1. signup and login uses `password_hash` and `password_verify` with the default settings. (bcrypt, cost 10). the user's password is used as the private key passphrase when signing up.
+1. signup and login uses `password_hash` and `password_verify` with the default settings. (bcrypt, cost 10). the user's password is used as the private key passphrase when signing up. both of these are stored as strings in the `users` table, with column type `blob`.
+
+	an attacker who steals our database could then decrypt data that was encrypted with these private keys, but only if they manage to crack the passwords. a better solution would be require the user to specify their own passphrase that is used when performing operations (one that isn't stored on disk.)
+
 2. public keys are public, so stored verbatim in the database.
+
 3. todo
+
+	a safer solution would be to send the priv key to the user and let them insert the passphrase (see no. 1 about custom passphrases) so that we (well, our backend) does not see passphrases at all. but since we should "never allow the users export or access their private key", we shall not implement this.
 4. todo
 
 **security mitigations + improvements**

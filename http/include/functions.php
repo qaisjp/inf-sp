@@ -35,9 +35,21 @@ function check_uniqueness($db, $username)
 // Add a user to the database
 function add_user($db, $username, $password)
 {
-    $insert = $db->prepare("INSERT INTO users VALUES(:name, :pass)");
+    $cert = openssl_pkey_new(array(
+        'private_key_bits' => 2048,
+        'private_key_type' => OPENSSL_KEYTYPE_RSA));
+    $privKey = openssl_pkey_get_private($cert);
+    openssl_pkey_export($privKey, $strPrivKey, $password);
+    $strPubKey = openssl_pkey_get_details($privKey)['key'];
+    echo '$strPrivKey:<pre>' . $strPrivKey . '</pre>';
+    echo '$strPubKey:<pre>' . $strPubKey . '</pre>';
+
+    $insert = $db->prepare("INSERT INTO users VALUES(:name, :pass, :pub, :priv)");
     $insert->bindParam(':name', $username);
     $insert->bindParam(':pass', password_hash($password, PASSWORD_DEFAULT));
+    $insert->bindParam(':pub', $strPubKey);
+    $insert->bindParam(':priv', $strPrivKey);
+
     $insert->execute();
 
     print("<p>Login created.</p>");
