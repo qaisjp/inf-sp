@@ -139,3 +139,27 @@ function get_loggedin_row()
 
     die("something went wrong");
 }
+
+// must only be called once per page
+function csrf_check()
+{
+    $t = $_SESSION['csrf_token'];
+    unset($_SESSION['csrf_token']);
+    if (!isset($_POST['csrf_token'])) {
+        die("csrf missing");
+    }
+    if ($_POST['csrf_token'] !== $t) {
+        die("csrf no match");
+    }
+}
+
+function csrf_set() {
+    // From https://gist.github.com/ziadoz/3454607#file-index-php-L7
+    if (!isset($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = base64_encode(openssl_random_pseudo_bytes(32));
+    }
+}
+
+function csrf_input() {
+    return "<input name=csrf_token type='hidden' value='" . $_SESSION['csrf_token'] . "'>";
+}

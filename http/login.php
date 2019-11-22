@@ -5,6 +5,8 @@ if ($_SERVER['REQUEST_METHOD'] !== "POST") {
     die("Bad request method");
 }
 
+csrf_check();
+
 $username = $_POST["username"];
 $password = $_POST["password"];
 

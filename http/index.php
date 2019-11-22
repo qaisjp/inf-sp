@@ -55,6 +55,7 @@ echo $_SESSION["TEST"];
             <div class="controls"> <button id="signup" name="sign" type="submit" value="signup" class="btn btn-default">Sign with passhrase</button> </div>
           </div>
         </fieldset>
+        <?= csrf_input(); ?>
       </form>
       <br>
 
@@ -74,6 +75,7 @@ echo $_SESSION["TEST"];
             <div class="controls"> <button name="verify" type="submit" value="signup" class="btn btn-default">verify</button> </div>
           </div>
         </fieldset>
+        <?= csrf_input(); ?>
       </form>
 
     <?php
@@ -102,8 +104,9 @@ echo $_SESSION["TEST"];
       print '        <button id="login" name="login" type="submit" value="login" class="btn btn-default">Log in</button>';
       print '      </div>';
       print '    </div>';
-      print '  </fieldset>';
+      print '  </fieldset>' . csrf_input();
       print '</form>';
+
     }
     ?>
   </div>

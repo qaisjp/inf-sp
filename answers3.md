@@ -371,3 +371,35 @@ Here are an almost comprehensive list of security mitigations that my code inclu
 	in production the `ini_set('display_errors', 'On');` line should be removed or turned off to prevent leakage of code or other information to the user
 
 	it theoretically code (depending on the type of error or the error message etc) expose keys in the environment and leak code
+
+10. lazy basic csrf protection is added too. my logout feature had to be modified to use a logout form instead of a logout link.
+
+	csrf is cross site request forgery. it means that Eve (attacker) could make a webpage with a form pointing to Alice's website, and send that webpage to Bob. Bob goes on Eve's webpage which automatically submits the form to Alice's website, doing something evil. To prevent this from happening Alice's csrf token is added Alice's form. the token cannot be provided by Eve's backend, only Alice's backend. Alice's backend verifies the token, so this makes sure that forms originate from Alice's frontend. (this is not a technique to prevent botting, however, since bots can simulate an entire session.)
+
+	a good example of why csrf on **logout** is necessary can be found here: https://security.stackexchange.com/a/95569
+
+	```php
+	// must only be called once per page
+	function csrf_check()
+	{
+		$t = $_SESSION['csrf_token'];
+		unset($_SESSION['csrf_token']);
+		if (!isset($_POST['csrf_token'])) {
+			die("csrf missing");
+		}
+		if ($_POST['csrf_token'] !== $t) {
+			die("csrf no match");
+		}
+	}
+
+	function csrf_set() {
+		// From https://gist.github.com/ziadoz/3454607#file-index-php-L7
+		if (!isset($_SESSION['csrf_token'])) {
+			$_SESSION['csrf_token'] = base64_encode(openssl_random_pseudo_bytes(32));
+		}
+	}
+
+	function csrf_input() {
+		return "<input name=csrf_token type='hidden' value='" . $_SESSION['csrf_token'] . "'>";
+	}
+	```
