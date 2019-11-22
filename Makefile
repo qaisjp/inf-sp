@@ -1,4 +1,4 @@
-.PHONY: all exploit
+.PHONY: all exploit question3.diff
 all: answers1.pdf answers2.pdf answers3.pdf question2a.diff question2b.diff
 
 answers1.pdf: answers1.md
