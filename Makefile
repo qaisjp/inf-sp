@@ -85,6 +85,7 @@ php-log:
 
 php-sync-httpd:
 	scp httpd.conf sp:/etc/httpd/conf/httpd.conf
+	scp php.ini sp:/etc/php/php.ini
 	ssh sp "systemctl restart httpd"
 
 code.tar.gz:
