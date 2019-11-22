@@ -13,9 +13,9 @@ RIDL and Fallout comparing to Meltdown and Spectre. **(4 marks)**
 
     ----
 
-    A speculative execution attack is....
+    A speculative execution attack is an attack that targets the speculative execution optimisation technique. This might happen due to branch mispredictions (spectre), out of order execution (meltdown), or some reason.
 
-    Compare similarities and differences.
+    Whilst both RIDL/Fallout and Meltdown/Spectre target the speculative execution optimisation technique, the former depends on data buffers whereas the latter does not.
 
 
 2. There are four CVE entry describing RIDL and Fallout, please identify which of them is (are) describing
