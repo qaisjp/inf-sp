@@ -32,6 +32,16 @@ echo $_SESSION["TEST"];
 
     <div class="container">
   <?php
+
+    $cert = openssl_pkey_new(array(
+      'private_key_bits' => 2048,
+      'private_key_type' => OPENSSL_KEYTYPE_RSA));
+    $privKey = openssl_pkey_get_private($cert);
+    openssl_pkey_export($privKey, $strPrivKey);
+    $strPubKey = openssl_pkey_get_details($privKey)['key'];
+    echo '$strPrivKey:<pre>' . $strPrivKey . '</pre>';
+    echo '$strPubKey:<pre>' . $strPubKey . '</pre>';
+
     if (check_signed_in()) {
       print 'Logged in as ' . $_SESSION["username"];
       print '<br><a href="/logout.php">logout</a>';
