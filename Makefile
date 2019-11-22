@@ -1,4 +1,4 @@
-.PHONY: all exploit question3.diff sshconfig-archive php-archive
+.PHONY: all exploit question3.diff sshconfig-archive php-archive sync
 all: answers1.pdf answers2.pdf answers3.pdf question2a.diff question2b.diff question3.diff
 
 submit: answers1.pdf answers2.pdf question2a.diff question2b.diff answers3.pdf sshconfig-archive question3.diff php-archive
@@ -76,3 +76,6 @@ hb-unmount:
 
 question3.diff:
 	git diff 1205086771dfe674fdf68aab019f4c05d306bd23 openssl-1.0.1f-source > question3.diff
+
+php-sync:
+	while true; do inotifywait -e close_write -r http | while read dir event f; do scp "$$dir$$f" user@sp:"/srv/$$dir$$f"; done; done
