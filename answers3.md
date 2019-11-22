@@ -199,3 +199,43 @@ Here are a list of general notes and security mitigations:
 	Example username to use log in as `david` without needing the correct password: `david' -- ` (don't forget trailing space after the two dashes)
 
 	fix works by using question mark parameters, which includes and escapes values for us. see https://www.php.net/manual/en/pdo.prepare.php#refsect1-pdo.prepare-examples
+
+7. fix xss
+
+	CWE-79: https://cwe.mitre.org/data/definitions/79.html
+
+	```diff
+	diff --git a/http/include/functions.php b/http/include/functions.php
+	index 9254e81..a6ad0ee 100644
+	--- a/http/include/functions.php
+	+++ b/http/include/functions.php
+	@@ -42,7 +42,7 @@ function add_user($db, $username, $password)
+		$insert->execute();
+
+		// todo xss
+	-    print("<p>Created login for '{$username}'.</p>");
+	+    print("<p>Login created.</p>");
+	}
+
+	// Try and sign a user up
+	@@ -55,8 +55,7 @@ function signup($username, $password)
+			if (check_uniqueness($db, $username)) {
+				add_user($db, $username, $password);
+			} else {
+	-            // todo xss
+	-            print("<p>Username '{$username}' is already registered.</p>");
+	+            print("<p>Username is already registered.</p>");
+			}
+		} catch (PDOException $e) {
+			error_log($e->getMessage());
+	```
+
+	if you are printing variables that come from or are derived from user input, the programmer should escape the text so that an xss attack cannot be performed.
+
+	this is commonly done in php via a function called `htmlspecialchars`.
+
+	without that function, a username `<script>alert("xss");</script>` would be directly transcluded into the html page, resulting in an alert popping up in the users browser (via javascript running in their browser). a malicious user (our attacker, Eve) could instead silently send cookies to Eve's website. or run a bitcoin miner on that page.
+
+	so above, instead of `... Username '{$username}' is ...`, you would do `... Username '{htmlspecialchars($username)}' is ...`
+
+	however, the "solution" we applied here is to simply not print out the username.
