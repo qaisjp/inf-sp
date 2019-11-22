@@ -138,7 +138,19 @@ question3.diff:
 
 	an attacker who steals our database could then decrypt data that was encrypted with these private keys, but only if they manage to crack the passwords. a better solution would be require the user to specify their own passphrase that is used when performing operations (one that isn't stored on disk.)
 
-2. public keys are public, so stored verbatim in the database.
+2. public keys are public, so they are stored verbatim in the database.
+
+	so when exporting the private key, we just read it from database and spit it out.
+
+	```php
+	<?php
+	require_once("include/base.php");
+	ensure_logged_in();
+	header('Content-Type: application/x-pem-file');
+	header("Cache-Control: no-store, no-cache");
+	header('Content-Disposition: attachment; filename="key.pem"');
+	echo get_loggedin_pubkey();
+	```
 
 3. todo
 

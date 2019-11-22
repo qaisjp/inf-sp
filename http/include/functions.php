@@ -37,7 +37,8 @@ function add_user($db, $username, $password)
 {
     $cert = openssl_pkey_new(array(
         'private_key_bits' => 2048,
-        'private_key_type' => OPENSSL_KEYTYPE_RSA));
+        'private_key_type' => OPENSSL_KEYTYPE_RSA
+    ));
     $privKey = openssl_pkey_get_private($cert);
     openssl_pkey_export($privKey, $strPrivKey, $password);
     $strPubKey = openssl_pkey_get_details($privKey)['key'];
@@ -117,8 +118,24 @@ function check_signed_in()
     return isset($_SESSION['username']);
 }
 
-function ensure_logged_in() {
+function ensure_logged_in()
+{
     if (!check_signed_in()) {
         die("please <a href='/'>log in</a>. thanks.");
     }
+}
+
+function get_loggedin_pubkey()
+{
+    ensure_logged_in();
+    $db = get_db();
+
+    $check = $db->prepare("SELECT * FROM users WHERE username = ?");
+    $result = $check->execute(array($_SESSION['username']));
+
+    while ($row = $check->fetch()) {
+        return $row['pubkey'];
+    }
+
+    die("something went wrong");
 }
