@@ -1,3 +1,8 @@
+<?php
+include_once("include/base.php");
+
+?>
+
 <html lang="en">
   <head>
     <meta charset="utf-8">
