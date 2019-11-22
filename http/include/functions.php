@@ -116,3 +116,9 @@ function check_signed_in()
 {
     return isset($_SESSION['username']);
 }
+
+function ensure_logged_in() {
+    if (!check_signed_in()) {
+        die("please <a href='/'>log in</a>. thanks.");
+    }
+}
