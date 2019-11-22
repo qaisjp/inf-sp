@@ -37,10 +37,11 @@ echo $_SESSION["TEST"];
 
     if (check_signed_in()) {
       print 'Logged in as ' . $_SESSION["username"];
-      print '<br><a href="/logout.php">logout</a><br>';
       print '<br><a href="/pubkeypls.php">download pub key</a><br>';
 
       ?>
+      <form name="login" class="form-horizontal" action="/logout.php" method="post"><button type="submit">logout</button>
+        <?= csrf_input(); ?></form>
       <br>
       <form name="login" class="form-horizontal" action="/sign.php" method="post">
         <fieldset>
