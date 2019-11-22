@@ -56,7 +56,7 @@ sshconfig-archive:
 hb-run:
 	scp openssl-1.0.1f-source/ssl/d1_both.c openssl-1.0.1f-source/ssl/t1_lib.c user@sp:openssl-1.0.1f-source/ssl
 	ssh user@sp "cd openssl-1.0.1f-source/; make && make install_sw"
-	ssh -tt user@sp "openssl s_server -key key/key.pem -cert key/cert.pem -accept 12345 -www"
+	ssh -tt user@sp "openssl/bin/openssl s_server -key key/key.pem -cert key/cert.pem -accept 12345 -www"
 
 hb-test:
 	./heartbleed.py localhost -p 54321
