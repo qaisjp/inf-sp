@@ -1,13 +1,8 @@
 diff --git a/openssl-1.0.1f-source/ssl/d1_both.c b/openssl-1.0.1f-source/ssl/d1_both.c
-index c0ce345..823f12b 100644
+index c0ce345..c2185ee 100644
 --- a/openssl-1.0.1f-source/ssl/d1_both.c
 +++ b/openssl-1.0.1f-source/ssl/d1_both.c
-@@ -1460,9 +1460,13 @@ dtls1_process_heartbeat(SSL *s)
- 	unsigned int padding = 16; /* Use minimum padding */
- 
- 	/* Read type and payload length first */
-+	if (1 + 2 + 16 > s->s3->rrec.length)
-+		return 0;
+@@ -1463,6 +1463,8 @@ dtls1_process_heartbeat(SSL *s)
  	hbtype = *p++;
  	n2s(p, payload);
  	pl = p;
@@ -17,15 +12,10 @@ index c0ce345..823f12b 100644
  	if (s->msg_callback)
  		s->msg_callback(0, s->version, TLS1_RT_HEARTBEAT,
 diff --git a/openssl-1.0.1f-source/ssl/t1_lib.c b/openssl-1.0.1f-source/ssl/t1_lib.c
-index ec6578a..8a3bdbb 100644
+index ec6578a..7c04207 100644
 --- a/openssl-1.0.1f-source/ssl/t1_lib.c
 +++ b/openssl-1.0.1f-source/ssl/t1_lib.c
-@@ -2559,9 +2559,13 @@ tls1_process_heartbeat(SSL *s)
- 	unsigned int padding = 16; /* Use minimum padding */
- 
- 	/* Read type and payload length first */
-+	if (1 + 2 + 16 > s->s3->rrec.length)
-+		return 0;
+@@ -2562,6 +2562,8 @@ tls1_process_heartbeat(SSL *s)
  	hbtype = *p++;
  	n2s(p, payload);
  	pl = p;
