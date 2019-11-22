@@ -38,7 +38,7 @@ function add_user($db, $username, $password)
     // TODO: prevent plaintext password output
     $insert = $db->prepare("INSERT INTO users VALUES(:name, :pass)");
     $insert->bindParam(':name', $username);
-    $insert->bindParam(':pass', $password);
+    $insert->bindParam(':pass', password_hash($password, PASSWORD_DEFAULT));
     $insert->execute();
 
     // todo xss
@@ -49,6 +49,10 @@ function add_user($db, $username, $password)
 function signup($username, $password)
 {
     // TODO: prevent username reveal
+
+    if (strlen($password) > 72) {
+        die("Password max length is 72");
+    }
 
     try {
         $db = get_db();
@@ -81,10 +85,14 @@ function login($username, $password)
         $db = get_db();
 
         // TODO: sql injection
-        $check = $db->prepare("SELECT * FROM users WHERE username = ? AND password = ?");
-        $result = $check->execute(array($username, $password));
+        $check = $db->prepare("SELECT * FROM users WHERE username = ?");
+        $result = $check->execute(array($username));
 
         while ($row = $check->fetch()) {
+            if (!password_verify($password, $row['password'])) {
+                return False;
+            }
+
             $_SESSION["username"] = $row['username'];
             return True;
         }
