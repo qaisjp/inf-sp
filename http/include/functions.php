@@ -59,8 +59,8 @@ function signup($username, $password)
             print("<p>Username '{$username}' is already registered.</p>");
         }
     } catch (PDOException $e) {
-        // todo information disclosure
-        print($e->getMessage());
+        error_log($e->getMessage());
+        die("Internal error!");
     }
 }
 
@@ -92,8 +92,8 @@ function login($username, $password)
 
         return False;
     } catch (PDOException $e) {
-        // todo information disclosure
-        print($e->getMessage());
+        error_log($e->getMessage());
+        die("Internal error!");
     }
 }
 
