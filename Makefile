@@ -1,7 +1,7 @@
-.PHONY: all exploit question3.diff sshconfig-archive php-archive sync php-log
+.PHONY: all exploit question3.diff sshconfig-archive code.tar.gz sync php-log
 all: answers1.pdf answers2.pdf answers3.pdf question2a.diff question2b.diff question3.diff
 
-submit: answers1.pdf answers2.pdf question2a.diff question2b.diff answers3.pdf sshconfig-archive question3.diff php-archive
+submit: answers1.pdf answers2.pdf question2a.diff question2b.diff answers3.pdf sshconfig-archive question3.diff code.tar.gz
 	mkdir _submit
 	cp exploit.py _submit/exploit
 	submit sp cw answers1.pdf answers2.pdf _submit/exploit question2a.diff question2b.diff answers3.pdf sshconfig.tar.gz question3.diff code.tar.gz
@@ -86,3 +86,6 @@ php-log:
 php-sync-httpd:
 	scp httpd.conf sp:/etc/httpd/conf/httpd.conf
 	ssh sp "systemctl restart httpd"
+
+code.tar.gz:
+	tar -czf code.tar.gz http httpd.conf
