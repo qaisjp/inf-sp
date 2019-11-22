@@ -109,3 +109,7 @@ Here are a list of general notes and security mitigations:
 	This ensures that code only meant for inclusion cannot be run directly by a user. This prevents unintended behaviour from occurring.
 
 	(If there was a file in there that performs an action, this prevents it from being run.)
+
+3. We've moved `db/ds_service.db` to `include/ds_service.db`, to prevent it from being downloaded. If someone downloads it they would have everyone's data including their passwords. This is bad! Protection is provided by blocking the include folder.
+
+	A better fix would be to move it outside a folder that httpd serves.

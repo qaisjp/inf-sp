@@ -9,7 +9,7 @@ function reload_page()
 // Get the databaase
 function get_db()
 {
-    $db = new PDO('sqlite:db/ds_service.db');
+    $db = new PDO('sqlite:include/ds_service.db');
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $db;
 }
