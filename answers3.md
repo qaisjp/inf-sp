@@ -108,7 +108,7 @@ Here are a list of general notes and security mitigations:
 
 	This ensures that code only meant for inclusion cannot be run directly by a user. This prevents unintended behaviour from occurring.
 
-	(If there was a file in there that performs an action, this prevents it from being run.)
+	(If there was a file in there that, when executed directly, performs an action we wouldn't want a user to perform, this prevents it from being run directly by the user.)
 
 3. We've moved `db/ds_service.db` to `include/ds_service.db`, to prevent it from being downloaded. If someone downloads it they would have everyone's data including their passwords. This is bad! Protection is provided by blocking the include folder.
 
@@ -121,3 +121,26 @@ Here are a list of general notes and security mitigations:
 	One example of why it's bad is because it depends directly on md5 hashes. See https://stackoverflow.com/questions/22140204/why-md5240610708-is-equal-to-md5qnkcdzo and https://www.whitehatsec.com/blog/magic-hashes/ for info on this.
 
 	We'll use PHP's inbuilt session feature instead.
+
+	Relevant changes include:
+
+	```diff
+     // Destroy the session token
+     function logout()
+     {
+    -    setcookie("username", "", time()-3600);
+    -    setcookie("session", "", time()-3600);
+	+    if (!session_destroy()) {
+	+        die("failed to destroy session. oh no.");
+	+    }
+     }
+	```
+
+	and
+
+	```diff
+	- create_token($row['username']);
+	+ _SESSION["username"] = $row['username'];
+	```
+
+	and the removal of `create_token` and `check_token`.
