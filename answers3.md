@@ -84,3 +84,15 @@ Makefile:
 question3.diff:
 	git diff 1205086771dfe674fdf68aab019f4c05d306bd23 openssl-1.0.1f-source > question3.diff
 ```
+
+\pagebreak
+
+# 3.3 Digital Signature Service (35 marks)
+
+Here are a list of general notes and security mitigations:
+
+1. We have deleted `include/.admin.php`. CWE-200. Example CVE: https://www.cvedetails.com/cve/CVE-2002-2247/
+
+	It is a common mistake to leave `phpinfo()` out in the wild. Leaving this there would disclose too much information like the PHP version, OS version, and lots of other stuff. This can then be used in helping someone perform an attack (as they would know if we're using an outdated PHP version, etc.)
+
+	Solution: prevent `phpinfo()` from being run.
